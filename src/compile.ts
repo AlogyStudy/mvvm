@@ -1,17 +1,19 @@
 class Compile {
+    private el: any
+    private vm: any
     constructor (el: any, vm: any) {
-        ;(<any>this).el = this.isElementNode(el) ? el : document.querySelector(el)
-        ;(<any>this).vm = vm
-        if ((<any>this).el) {
+        this.el = this.isElementNode(el) ? el : document.querySelector(el)
+        this.vm = vm
+        if (this.el) {
             // 获取到元素
             /**
              * 1. 先把真实的DOM移入到内存中, fragment(文档碎片)
              * 2. 编译 -> 提取需要的元素节点（v-model）和 文本节点{{}}
              * 3. 把编译好的fragment在放回到document
              */
-            let fragment = this.node2Fragment((<any>this).el)
+            let fragment = this.node2Fragment(this.el)
             this.compile(fragment)
-            ;(<any>this).el.appendChild(fragment)
+            this.el.appendChild(fragment)
         }
     }
     // =================================
@@ -37,7 +39,7 @@ class Compile {
                 // node this.vm.$data, key // v-model v-text v-html
                 // let funName = attrName.slice(attrName.indexOf('-') + 1)
                 let [, funName] = attrName.split('-')
-                ;(<any>CompileUtil)[funName](node, (<any>this).vm, expr)
+                ;(<any>CompileUtil)[funName](node, this.vm, expr)
             }
         })
     }
@@ -47,7 +49,7 @@ class Compile {
         let reg = /\{\{([^}]+)\}\}/g
         if (expr && reg.test(expr)) {
             // node this.vm.$data text
-            ;(<any>CompileUtil)['text'](node, (<any>this).vm, expr)
+            ;(<any>CompileUtil)['text'](node, this.vm, expr)
         }
     }
     compile (fragment: DocumentFragment | Node): void {

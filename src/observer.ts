@@ -1,7 +1,8 @@
 
 class Observer {
+    private data: object
     constructor (data: object) {
-        ;(<any>this).data = data
+        this.data = data
         this.observer(data)
     }
     observer (data: object) {
@@ -21,7 +22,7 @@ class Observer {
             enumerable: true,
             configurable: true,
             get () {
-                (<any>Dep).target && dep.addSubs((<any>Dep).target)
+                Dep.target && dep.addSubs(Dep.target)
                 return value
             },
             set (newValue) {

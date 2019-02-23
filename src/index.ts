@@ -5,19 +5,21 @@ interface Ioptions {
 }
 
 class Sue {
+    private $el: object
+    private $data: object
     constructor (options: Ioptions) {
         // 先把可用的东西挂载在实例上
-        (<any>this).$el = options.el;
-        (<any>this).$data = options.data;
+        this.$el = options.el;
+        this.$data = options.data;
 
-        if ((<any>this).$el) {
+        if (this.$el) {
             // 数据劫持，把对象的所有属性，改成`getter`和`setter`方法
             // @ts-ignore
-            new Observer((<any>this).$data)
-            this.proxyData((<any>this).$data)
+            new Observer(this.$data)
+            this.proxyData(this.$data)
             // 用数据和元素进行编译
             // @ts-ignore
-            new Compile((<any>this).$el, this)
+            new Compile(this.$el, this)
         }
     }
     proxyData (data: any) {
